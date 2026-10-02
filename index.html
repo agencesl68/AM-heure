@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f6f4">
+<title>AM Environnement — Ma feuille d'heures</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20560%20270%22%3E%3Cg%20fill%3D%22%235C743A%22%3E%3Cpolygon%20points%3D%22118%2C250%2020%2C250%2096%2C20%20168%2C20%22%2F%3E%3Cpolygon%20points%3D%22178%2C250%20246%2C250%20246%2C20%20174%2C20%22%2F%3E%3Crect%20x%3D%22104%22%20y%3D%22176%22%20width%3D%22142%22%20height%3D%2240%22%2F%3E%3Crect%20x%3D%22300%22%20y%3D%2220%22%20width%3D%2252%22%20height%3D%22230%22%2F%3E%3Crect%20x%3D%22488%22%20y%3D%2220%22%20width%3D%2252%22%20height%3D%22230%22%2F%3E%3Cpolygon%20points%3D%22300%2C20%20352%2C20%20420%2C150%20420%2C236%20368%2C236%22%2F%3E%3Cpolygon%20points%3D%22540%2C20%20488%2C20%20420%2C150%20420%2C236%20472%2C236%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%3E%3Cpath%20d%3D%22M150%20176c-3-30%200-54%206-70%208%2017%2011%2041%209%2070z%22%2F%3E%3Cpath%20d%3D%22M166%20176c6-26%2015-45%2027-56%200%2022-6%2042-16%2056z%22%2F%3E%3Cpath%20d%3D%22M136%20176c-9-19-20-32-32-39%202%2017%2010%2031%2021%2039z%22%2F%3E%3Cpath%20d%3D%22M172%20176c13-13%2027-21%2040-23-5%2012-15%2020-27%2023z%22%2F%3E%3Cpath%20d%3D%22M121%20176c6-12%2014-20%2024-24-1%2010-5%2018-12%2024z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AM Environnement">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+/* =============================================================================
+   AM ENVIRONNEMENT — Ma feuille d'heures (employé) — fichier unique
+   ============================================================================= */
+:root{
+  --ink:#1b2520; --ink-2:#3a4640; --muted:#8a948c; --line:#e6e9e6; --line-2:#dde3dd;
+  --bg:#f4f6f4; --surface:#FFFFFF; --surface-2:#fcfdfc; --header:#12201a;
+  --accent:#5C743A; --accent-2:#6E8A45; --accent-ink:#42532A; --accent-soft:#EEF2E7;
+  --danger:#be123c; --danger-soft:#fdeaef; --good:#15803d; --good-soft:#e9f6ed;
+  --amber:#b45309; --amber-soft:#fdf3e3; --blue:#2B6CB0; --blue-soft:#E4EEF7;
+  --radius:14px; --radius-lg:20px; --nav-h:66px;
+  --ease:cubic-bezier(.2,.7,.2,1); --spring:cubic-bezier(.34,1.42,.5,1);
+  --shadow-sm:0 1px 2px rgba(23,24,27,.05),0 1px 3px rgba(23,24,27,.045);
+  --shadow-md:0 2px 6px rgba(23,24,27,.05),0 14px 28px -12px rgba(23,24,27,.16);
+  --shadow-lg:0 18px 42px -14px rgba(23,24,27,.22);
+  --shadow-accent:0 10px 22px -8px rgba(92,116,58,.45);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Helvetica Neue",Helvetica,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;touch-action:manipulation}
+.wrap{max-width:540px;margin:0 auto;padding:18px 18px calc(var(--nav-h) + 26px + env(safe-area-inset-bottom))}
+.num{font-variant-numeric:tabular-nums}
+/* Ouverture : fondu simple, opacite seule — identique a l'app Direction. */
+@keyframes rise{from{opacity:0}to{opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.82)}55%{opacity:1;transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes navpop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@keyframes tick{to{stroke-dashoffset:0}}
+
+
+/* En-tête clair + logo */
+.topbar{background:var(--surface);color:var(--ink);padding:calc(12px + env(safe-area-inset-top)) 18px 12px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);box-shadow:var(--shadow-sm)}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent)}
+.topbar .brand{height:44px;width:auto;display:block}
+.topbar .who{margin-left:auto;text-align:right;line-height:1.2}
+.topbar .who .nom{font-weight:800;font-size:15px}
+.topbar .who .role{font-size:10px;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-top:2px}
+
+#app{animation:rise .24s cubic-bezier(.4,0,.6,1) both}
+
+/* Navigation basse */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:space-around;
+  background:rgba(255,255,255,.9);-webkit-backdrop-filter:saturate(1.7) blur(16px);backdrop-filter:saturate(1.7) blur(16px);
+  border-top:1px solid var(--line);padding:8px 6px calc(6px + env(safe-area-inset-bottom));
+  box-shadow:0 -8px 26px -14px rgba(23,24,27,.22);animation:navpop .4s var(--spring) both}
+.tabbar:empty{display:none}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;
+  border:none;background:none;font:inherit;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;
+  border-radius:14px;transition:color .2s var(--ease),transform .14s var(--spring)}
+.nav-item svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s var(--spring)}
+.nav-item[aria-current="true"]{color:var(--accent)}
+.nav-item[aria-current="true"] svg{transform:translateY(-2px) scale(1.08)}
+.nav-item:active{transform:scale(.92)}
+.nav-item .nav-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:0;transform:scale(0);transition:.22s var(--spring)}
+.nav-item[aria-current="true"] .nav-dot{opacity:1;transform:scale(1)}
+
+/* Hero / sections */
+.hero{margin:22px 2px 4px;animation:rise .4s var(--spring) both}
+.hero .hi{font-size:13px;font-weight:600;color:var(--muted)}
+.hero .name{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin-top:2px;text-transform:capitalize}
+.hero .date{font-size:13px;color:var(--muted);margin-top:5px;text-transform:capitalize}
+.sec{display:flex;align-items:center;gap:9px;margin:24px 2px 12px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sec::before{content:"";width:16px;height:2px;border-radius:2px;background:var(--accent);flex:0 0 auto}
+.sec .grow{flex:1}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-top:12px;box-shadow:var(--shadow-md);animation:fade .24s ease both}
+.eyebrow{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.eyebrow::before{content:"";width:14px;height:2px;border-radius:2px;background:var(--accent)}
+.hint{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+/* Barre de date */
+.daybar{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:20px}
+.daybar .day{font-size:30px;font-weight:800;letter-spacing:-.01em;text-transform:capitalize;line-height:1.05}
+.daybar .day-sub{font-size:13px;color:var(--muted);margin-top:4px}
+.date-input{flex:0 0 auto;max-width:52%;-webkit-appearance:none;appearance:none;font:inherit;font-size:14px;color:var(--ink);border:1px solid var(--line-2);border-radius:12px;padding:11px 12px;background:var(--surface);transition:.15s var(--ease)}
+.date-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+/* Champs */
+.field{display:block}
+.field .lab{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:7px}
+.in,input.in{width:100%;-webkit-appearance:none;appearance:none;font:inherit;font-size:16px;color:var(--ink);padding:13px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface-2);transition:border-color .15s var(--ease),box-shadow .15s var(--ease)}
+input[type=time].in{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.tp-field{width:100%;-webkit-appearance:none;appearance:none;font:inherit;font-size:18px;font-weight:700;
+  color:var(--ink);padding:14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface-2);
+  text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.02em;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tp-field.vide{color:var(--muted);font-weight:600}
+.tp-field:active{border-color:var(--accent)}
+.tp-overlay{position:fixed;inset:0;background:rgba(30,26,20,.34);z-index:60;opacity:0;pointer-events:none;transition:opacity .18s var(--ease)}
+.tp-overlay.on{opacity:1;pointer-events:auto}
+.tp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--surface);border-radius:22px 22px 0 0;
+  box-shadow:0 -12px 40px rgba(30,26,20,.22);padding:8px 18px calc(18px + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .24s var(--spring,cubic-bezier(.22,1,.36,1))}
+.tp-sheet.on{transform:translateY(0)}
+.tp-head{display:flex;align-items:center;justify-content:space-between;padding:10px 2px 12px}
+.tp-title{font-weight:800;font-size:16px}
+.tp-ok{border:0;background:var(--accent);color:#fff;font:inherit;font-weight:800;font-size:15px;padding:10px 20px;border-radius:12px;cursor:pointer}
+.tp-cancel{border:0;background:none;color:var(--muted);font:inherit;font-weight:700;font-size:15px;padding:10px 4px;cursor:pointer}
+.tp-wheels{position:relative;display:flex;gap:10px;justify-content:center;height:240px}
+.tp-band{position:absolute;left:0;right:0;top:96px;height:48px;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);pointer-events:none}
+.tp-col{flex:1;max-width:150px;height:240px;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tp-col::-webkit-scrollbar{display:none}
+.tp-col .pad{height:96px}
+.tp-col .it{height:48px;line-height:48px;text-align:center;font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;
+  color:var(--muted);scroll-snap-align:center;transition:color .12s,transform .12s}
+.tp-col .it.sel{color:var(--ink);transform:scale(1.06)}
+.tp-sep{align-self:center;font-size:28px;font-weight:800;color:var(--ink)}
+.in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);background:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two>*{min-width:0}
+.mt{margin-top:16px}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.quick button{min-height:44px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink-2);font:inherit;font-weight:600;font-size:13px;border-radius:999px;padding:0 16px;cursor:pointer;transition:.15s var(--spring)}
+.quick button:active{transform:scale(.96)}
+.quick button.primary{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+
+/* Segment (types absence) */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg .pill{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:64px;justify-content:center;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink-2);border-radius:14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.15s var(--spring)}
+.seg .pill svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
+.seg .pill:active{transform:scale(.96)}
+.seg .pill[aria-pressed="true"].conge{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.seg .pill[aria-pressed="true"].repos{border-color:var(--blue);background:var(--blue-soft);color:var(--blue)}
+.seg .pill[aria-pressed="true"].absence{border-color:var(--amber);background:var(--amber-soft);color:var(--amber)}
+.seg .pill[aria-pressed="true"].maladie{border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
+
+/* Calendrier */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-nav .m{font-weight:800;font-size:17px;text-transform:capitalize}
+.cal-nav button{width:40px;height:40px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cal-nav button:active{transform:scale(.92)}
+.cal-nav button svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-hd{text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);padding-bottom:4px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;border:1px solid transparent;position:relative;color:var(--ink);transition:.12s var(--ease)}
+.cal-day.blank{visibility:hidden}
+.cal-day.we{color:var(--line-2)}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--line-2)}
+.cal-day:active{transform:scale(.9)}
+.cal-day .mk{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%}
+.cal-day .mk.repos{background:var(--blue)}.cal-day .mk.conge{background:var(--accent)}.cal-day .mk.absence{background:var(--amber)}.cal-day .mk.maladie{background:var(--danger)}.cal-day .mk.travail{background:var(--good)}.cal-day .mk.fer{background:#c9c2b6}
+.cal-day.dim{color:#cfc9c0;cursor:default}
+.cal-day.ferie{color:var(--muted);cursor:default;background:var(--surface-2)}
+.cal-day.sel{color:#fff;border-color:transparent}
+.cal-day.sel.repos{background:var(--blue)}.cal-day.sel.conge{background:var(--accent)}.cal-day.sel.absence{background:var(--amber)}.cal-day.sel.maladie{background:var(--danger)}
+.cal-day.sel .mk{display:none}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.cal-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+/* Registre total (foncé) */
+.ledger{background:linear-gradient(158deg,#1c1d22,#101114 72%);color:#fff;border-radius:var(--radius-lg);padding:22px;margin-top:16px;box-shadow:var(--shadow-lg)}
+.ledger .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#A9A49B;font-weight:600}
+.ledger .big{font-size:46px;font-weight:800;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:8px;animation:pop .5s var(--spring) both}
+.ledger .big .u{font-size:20px;color:#fff;margin-left:4px}
+.ledger .note{color:#B7B1A8;font-size:13px;margin-top:8px}
+
+/* Boutons pleine largeur */
+.btn-send{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:16px;border:none;border-radius:14px;background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#fff;font:inherit;font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:17px;cursor:pointer;box-shadow:var(--shadow-accent);transition:transform .14s var(--spring)}
+.btn-send:active{transform:translateY(1px) scale(.99)}
+.btn-send:disabled{background:#CFC9C0;box-shadow:none}
+.btn-send svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* Confirmation */
+.done{text-align:center;padding:10px 4px}
+.done .tick{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;animation:pop .5s var(--spring) both}
+.done .tick svg{width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.done .tick svg path{stroke-dasharray:28;stroke-dashoffset:28;animation:tick .55s ease .2s forwards}
+.done h3{margin:2px 0 6px;font-size:21px;font-weight:800}
+.done p{color:var(--muted);margin:3px 0;font-size:14px}
+.done .strong{color:var(--ink);font-weight:800}
+
+/* Onboarding */
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;padding:0 18px;border:none;border-radius:14px;background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#fff;font:inherit;font-weight:800;font-size:15px;cursor:pointer;box-shadow:var(--shadow-accent);transition:transform .14s var(--spring)}
+.cta svg{width:20px;height:20px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.cta:disabled{background:#CFC9C0;box-shadow:none;transform:none;cursor:not-allowed}
+.cta:active{transform:translateY(1px) scale(.99)}
+.cta.line{background:var(--surface-2);color:var(--accent-ink);box-shadow:none;border:1px solid var(--line-2)}
+
+/* Case « Rester connecté » */
+.remember{display:flex;align-items:center;gap:11px;margin-top:16px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-2);-webkit-user-select:none;user-select:none}
+.remember input{position:absolute;opacity:0;width:0;height:0}
+.remember .box{width:26px;height:26px;border-radius:8px;border:2px solid var(--line-2);background:var(--surface-2);flex:0 0 auto;position:relative;transition:.15s var(--spring)}
+.remember input:checked + .box{background:var(--accent);border-color:var(--accent)}
+.remember input:checked + .box::after{content:"";position:absolute;left:8px;top:3px;width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.remember input:focus-visible + .box{box-shadow:0 0 0 3px var(--accent-soft)}
+.avatar2{width:46px;height:46px;border-radius:14px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex:0 0 auto;background:linear-gradient(150deg,var(--accent-2),var(--accent));box-shadow:var(--shadow-accent)}
+/* Bandeau hors ligne */
+.offline{display:flex;align-items:center;gap:10px;background:var(--amber-soft);color:var(--amber);border:1px solid #e6c17a;border-radius:12px;padding:11px 14px;margin-top:14px;font-size:13px;font-weight:700}
+.offline .d{width:8px;height:8px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+
+/* Historique */
+.yr{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px}
+.yr button{width:42px;height:42px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.yr button:disabled{opacity:.35}
+.yr button:active{transform:scale(.92)}
+.yr button svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4}
+.yr .y{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;min-width:80px;text-align:center}
+.mois-h{display:flex;align-items:baseline;justify-content:space-between;margin:22px 2px 8px}
+.mois-h .mn{font-size:16px;font-weight:800;text-transform:capitalize}
+.mois-h .mt{font-size:13px;color:var(--accent-ink);font-weight:700}
+.day-row{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line)}
+.day-row:last-child{border-bottom:none}
+.day-row .dd{width:44px;text-align:center;flex:0 0 auto}
+.day-row .dd .n{font-size:18px;font-weight:800;line-height:1}
+.day-row .dd .w{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-top:2px}
+.day-row .di{flex:1;min-width:0}
+.day-row .dt{font-weight:700;font-size:14px;text-transform:capitalize}
+.day-row .ds{font-size:12px;color:var(--muted);margin-top:2px}
+.day-row .dv{font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.day-row .dv.off{font-size:12px;text-transform:uppercase}
+.day-row .dv.off.repos{color:var(--blue)}.day-row .dv.off.conge{color:var(--accent-ink)}.day-row .dv.off.absence{color:var(--amber)}.day-row .dv.off.maladie{color:var(--danger)}
+
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;text-transform:uppercase}
+.badge.late{background:var(--amber-soft);color:var(--amber)}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+.empty .big{font-size:15px;font-weight:700;color:var(--ink-2)}
+.foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:20px}
+.foot a{color:var(--accent-ink);text-decoration:none;font-weight:700}
+
+/* CTA notifications */
+.notif-cta{max-width:540px;margin:0 auto;padding:0 18px}
+.notif-cta:empty{display:none}
+.notif-cta-btn{width:100%;margin-top:14px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font:inherit;font-weight:700;font-size:14px;border-radius:12px;padding:13px;cursor:pointer;transition:.14s var(--spring)}
+.notif-cta-btn:active{transform:scale(.98)}
+.notif-bloque{margin-top:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink-2);font-size:12.5px;font-weight:600;line-height:1.45;border-radius:12px;padding:12px 14px}
+.notif-carte{margin-top:14px;border:1px solid var(--accent);background:var(--accent-soft);
+  border-radius:14px;padding:15px 16px}
+.notif-carte.gris{border-color:var(--line-2);background:var(--surface-2)}
+.notif-carte .nc-t{font-weight:800;font-size:14.5px;color:var(--accent-ink);margin-bottom:5px}
+.notif-carte.gris .nc-t{color:var(--ink)}
+.notif-carte .nc-d{font-size:12.8px;line-height:1.5;color:var(--ink-2)}
+.notif-carte .notif-cta-btn{margin-top:12px;background:var(--accent);color:#fff;border-color:var(--accent)}
+.notif-carte ol{margin:7px 0 0;padding-left:18px}
+.notif-carte li{margin-bottom:3px}
+.notif-diag{font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 20px);transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:var(--shadow-lg);z-index:60;max-width:90%;text-align:center;animation:pop .3s var(--spring) both}
+.toast.err{background:var(--danger)}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+<!-- Notifications push — Web Push VAPID standard (aucun SDK tiers) -->
+<script>
+  var AM_VERSION="v2";
+  var AM_DEBUG=/[?&]debug=1/.test(location.search);
+  var AM_VAPID_PUBLIC="BEx3Fw-lSV6EB3_8PvyiKgQxwyP5xia-vP4kbB33QDHQAO0xZmEt9oTVaMERHOExwblth_T7j2MS7aMQMuYmzBM";
+  var AM_SUB_WEBHOOK="https://hook.eu1.make.com/s9escvs6afqaajdp5q5jc4rd8rkkh43f";
+  var AM_SCOPE="/AM-heure/";
+  function amB64ToUint8(b64){var pad="=".repeat((4-b64.length%4)%4);var s=(b64+pad).replace(/-/g,"+").replace(/_/g,"/");var raw=atob(s),a=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)a[i]=raw.charCodeAt(i);return a;}
+  window.AM_NOTIF={
+    employe:null,
+    CLE:"am_notif_ok",
+
+    lu:function(){ try{ return localStorage.getItem(AM_NOTIF.CLE)==="1"; }catch(e){ return false; } },
+    noter:function(v){ try{ v?localStorage.setItem(AM_NOTIF.CLE,"1"):localStorage.removeItem(AM_NOTIF.CLE); }catch(e){} },
+
+    /* Le service worker est (re)pose a CHAQUE ouverture, plus seulement au
+       clic sur le bouton. C'est lui qui affiche la notification quand l'app
+       est fermee ; si iOS l'a evince, on le remet ici sans rien demander. */
+    init:async function(){
+      try{ if("serviceWorker" in navigator) await navigator.serviceWorker.register(AM_SCOPE+"sw.js",{scope:AM_SCOPE}); }catch(e){}
+    },
+
+    login:function(e){AM_NOTIF.employe=e;AM_NOTIF.refreshCta();AM_NOTIF.sync();},
+    markDone:function(){},
+
+    abonnement:async function(){
+      try{
+        var reg=await navigator.serviceWorker.getRegistration(AM_SCOPE);
+        if(!reg) reg=await navigator.serviceWorker.register(AM_SCOPE+"sw.js",{scope:AM_SCOPE});
+        return await reg.pushManager.getSubscription();
+      }catch(e){ return null; }
+    },
+
+    envoyer:async function(sub){
+      if(!sub||!AM_SUB_WEBHOOK||!AM_NOTIF.employe||!AM_NOTIF.employe.id) return;
+      await fetch(AM_SUB_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({employeId:AM_NOTIF.employe.id,employeNom:AM_NOTIF.employe.nom,subscription:sub})});
+    },
+
+    sync:async function(){
+      try{
+        if(!AM_NOTIF.employe||Notification.permission!=="granted")return;
+        var sub=await AM_NOTIF.abonnement(); if(!sub)return;
+        await AM_NOTIF.envoyer(sub); AM_NOTIF.noter(true);
+      }catch(e){}
+    },
+
+    /* Reabonnement silencieux : l'autorisation tient toujours mais le jeton
+       a saute. L'utilisateur n'a rien a refaire, on ne reaffiche pas le bouton. */
+    reabonner:async function(){
+      try{
+        var reg=await navigator.serviceWorker.register(AM_SCOPE+"sw.js",{scope:AM_SCOPE});
+        await navigator.serviceWorker.ready;
+        var sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:amB64ToUint8(AM_VAPID_PUBLIC)});
+        await AM_NOTIF.envoyer(sub);
+      }catch(e){}
+    },
+
+    activer:async function(btn){
+      try{
+        if(btn){btn.disabled=true;btn.textContent="Activation…";}
+        var perm=await Notification.requestPermission();
+        if(perm!=="granted"){ AM_NOTIF.noter(false); AM_NOTIF.refreshCta(); return; }
+        var reg=await navigator.serviceWorker.register(AM_SCOPE+"sw.js",{scope:AM_SCOPE});
+        await navigator.serviceWorker.ready;
+        var sub=await reg.pushManager.getSubscription();
+        if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:amB64ToUint8(AM_VAPID_PUBLIC)});
+        await AM_NOTIF.envoyer(sub);
+        if(sub) AM_NOTIF.noter(true);
+      }catch(e){ if(btn)btn.textContent="Erreur : "+(e&&e.message?e.message:e); }
+      AM_NOTIF.refreshCta();
+    },
+
+    refreshCta:async function(){
+      var el=document.getElementById("notif-cta"); if(!el)return;
+      var perm="?"; try{ perm=(typeof Notification!=="undefined")?Notification.permission:"n/a"; }catch(e){}
+      var sub=await AM_NOTIF.abonnement();
+      if(perm==="denied") AM_NOTIF.noter(false);
+      /* On masque des que l'abonnement existe, OU si on l'a deja active une
+         fois et que l'autorisation tient : une eviction du service worker ne
+         doit pas faire revenir le bouton. */
+      var masquer=(perm==="granted") && (!!sub || AM_NOTIF.lu());
+      /* iPhone : tant que l'app n'est pas sur l'ecran d'accueil, iOS interdit
+         les notifications. On explique la manip au lieu d'afficher un bouton
+         qui ne marchera pas. */
+      var iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+      var installe=(window.navigator.standalone===true)||(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches);
+      var possible=(typeof Notification!=="undefined")&&("PushManager" in window)&&("serviceWorker" in navigator);
+      var html="";
+      if(perm==="denied"){
+        html='<div class="notif-carte gris"><div class="nc-t">Rappels bloqués sur ce téléphone</div>'
+           + '<div class="nc-d">Vous ne recevrez pas le rappel du soir quand votre feuille n\'est pas remplie.<br>'
+           + 'Pour le réactiver : Réglages du téléphone → Notifications → <b>AM Heures</b> → autoriser.</div></div>';
+      } else if(!masquer && iOS && !installe){
+        html='<div class="notif-carte"><div class="nc-t">🔔 Activez les rappels</div>'
+           + '<div class="nc-d">Sans eux, vous ne recevrez rien le soir si votre feuille d\'heures n\'est pas remplie.'
+           + '<br>Sur iPhone, l\'app doit d\'abord être sur l\'écran d\'accueil :'
+           + '<ol><li>Touchez <b>Partager</b> en bas de l\'écran</li>'
+           + '<li>Choisissez <b>Sur l\'écran d\'accueil</b></li>'
+           + '<li>Rouvrez l\'app depuis son icône</li></ol></div></div>';
+      } else if(!masquer && !possible){
+        html='<div class="notif-carte gris"><div class="nc-t">Rappels indisponibles</div>'
+           + '<div class="nc-d">Ce téléphone ne gère pas les notifications de l\'app. Pensez à remplir votre feuille chaque soir.</div></div>';
+      } else if(!masquer){
+        html='<div class="notif-carte"><div class="nc-t">🔔 Activez les rappels</div>'
+           + '<div class="nc-d">Un rappel à 19h30 si votre feuille d\'heures n\'est pas remplie. Sans autorisation, vous ne recevrez rien.</div>'
+           + '<button type="button" id="notif-btn" class="notif-cta-btn">Activer les notifications</button></div>';
+      }
+      el.innerHTML=html+(AM_DEBUG?'<div class="notif-diag">perm:'+perm+' · token:'+(sub?"OUI":"non")+' · memo:'+(AM_NOTIF.lu()?"1":"0")+' · '+AM_VERSION+'</div>':"");
+      var b=document.getElementById("notif-btn");
+      if(b)b.addEventListener("click",function(){AM_NOTIF.activer(b);});
+      if(!sub && perm==="granted" && AM_NOTIF.lu()) AM_NOTIF.reabonner();
+    }
+  };
+  AM_NOTIF.init();
+</script>
+</head>
+<body>
+<div class="topbar">
+  <img class="brand" alt="AM Environnement" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20560%20270%22%3E%3Cg%20fill%3D%22%235C743A%22%3E%3Cpolygon%20points%3D%22118%2C250%2020%2C250%2096%2C20%20168%2C20%22%2F%3E%3Cpolygon%20points%3D%22178%2C250%20246%2C250%20246%2C20%20174%2C20%22%2F%3E%3Crect%20x%3D%22104%22%20y%3D%22176%22%20width%3D%22142%22%20height%3D%2240%22%2F%3E%3Crect%20x%3D%22300%22%20y%3D%2220%22%20width%3D%2252%22%20height%3D%22230%22%2F%3E%3Crect%20x%3D%22488%22%20y%3D%2220%22%20width%3D%2252%22%20height%3D%22230%22%2F%3E%3Cpolygon%20points%3D%22300%2C20%20352%2C20%20420%2C150%20420%2C236%20368%2C236%22%2F%3E%3Cpolygon%20points%3D%22540%2C20%20488%2C20%20420%2C150%20420%2C236%20472%2C236%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%3E%3Cpath%20d%3D%22M150%20176c-3-30%200-54%206-70%208%2017%2011%2041%209%2070z%22%2F%3E%3Cpath%20d%3D%22M166%20176c6-26%2015-45%2027-56%200%2022-6%2042-16%2056z%22%2F%3E%3Cpath%20d%3D%22M136%20176c-9-19-20-32-32-39%202%2017%2010%2031%2021%2039z%22%2F%3E%3Cpath%20d%3D%22M172%20176c13-13%2027-21%2040-23-5%2012-15%2020-27%2023z%22%2F%3E%3Cpath%20d%3D%22M121%20176c6-12%2014-20%2024-24-1%2010-5%2018-12%2024z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="AM Environnement">
+  <div class="who" id="who"></div>
+</div>
+<div id="notif-cta" class="notif-cta"></div>
+<main class="wrap" id="app"></main>
+<nav id="tabbar" class="tabbar" aria-label="Navigation principale"></nav>
+
+<script>
+/* =============================================================================
+   ⚙️  CONFIG — SEULE PARTIE À MODIFIER
+   =============================================================================
+
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │  👤  OÙ CRÉER LES IDENTIFIANTS ET MOTS DE PASSE DES SALARIÉS ?            │
+   │                                                                           │
+   │  Les comptes NE SONT PLUS dans ce fichier : ils sont sur le serveur       │
+   │  (Make.com), ce qui permet d'ajouter un salarié SANS redéployer l'app,    │
+   │  et évite que les mots de passe soient lisibles dans le code.             │
+   │                                                                           │
+   │  👉 Make.com  ›  Data stores  ›  « Comptes salariés » (obsolète, tout est sur Supabase)   │
+   │                                                                           │
+   │  Ajouter un salarié = « Add record » avec :                               │
+   │     key         : tfender                (= identifiant, en minuscules)   │
+   │     identifiant : tfender                (identique à la clé)             │
+   │     motDePasse  : hk2026                 (le mot de passe du salarié)     │
+   │     nom         : Jean Martin            (nom affiché dans l'app)         │
+   │     role        : salarie                (ou « patron » pour la direction)│
+   │     token       : tk-tfender-3b81d6c4a9  (n'importe quel texte UNIQUE —   │
+   │                   sert à la case « Rester connecté ». NE JAMAIS LAISSER   │
+   │                   VIDE, et ne jamais mettre le même sur deux comptes.)    │
+   │     actif       : true                                                    │
+   │                                                                           │
+   │  Comptes déjà créés :                                                     │
+   │     • tfender / hk2026        → salarié (exemple, à supprimer)            │
+   │     • patron  / HKpatron2026  → direction (utilisé par l'app patron)      │
+   └───────────────────────────────────────────────────────────────────────────┘
+   ============================================================================= */
+window.AM_CONFIG = {
+  // --- Base de données Supabase : COLLER LES 2 VALEURS ICI ---
+  //     Supabase > Project Settings > API
+  supabaseUrl: "https://voxtcptopwnautnxsmia.supabase.co",     // « Project URL »
+  supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveHRjcHRvcHduYXV0bnhzbWlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5Njc3MTMsImV4cCI6MjEwMjU0MzcxM30.Vg0qIfEaitIJ3bdWCT6D0SF_OtUTrp5gKGw0HuWRDcY",                          // « anon » / « public » (jamais service_role)
+  domaine: "@hk.local",                              // suffixe technique des identifiants
+
+  // --- Réglages métier ---
+  timezone: "Europe/Paris",
+  stepMinutes: 15,                                   // minutes au quart d’heure uniquement
+  /* Historique du salarie : masque tant que le calcul des heures n'est pas
+     valide. Repasser a true pour le rouvrir, il n'y a rien d'autre a faire. */
+  historiqueSalarie: true,
+  heuresAttendues: { lundi:8, mardi:8, mercredi:8, jeudi:8, vendredi:8, samedi:0, dimanche:0 },
+  journeeStandard: { matineeDebut:"07:30", matineeFin:"12:00", apremDebut:"13:00", apremFin:"16:30" }
+};
+
+/* ============================ APP ============================ */
+(function(){
+  "use strict";
+  const CFG=window.AM_CONFIG||{};
+  const STEP=(CFG.stepMinutes||10)*60;
+  const JOURS=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+  const MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+  const ABS={conge:"Congé",repos:"Repos",absence:"Absence",maladie:"Maladie"};
+  /* Journees payees sans travailler : elles comptent dans le total du mois,
+     comme dans le fichier Excel. Une absence non justifiee, non. */
+  const CREDITE={conge:true,repos:true,maladie:true,absence:false};
+  const CLE="am_identite";
+  const app=document.getElementById("app");
+  const who=document.getElementById("who");
+
+  /* Dates */
+  function todayISO(){const d=new Date(),o=d.getTimezoneOffset()*60000;return new Date(d-o).toISOString().slice(0,10);}
+  function isoOf(d){const o=d.getTimezoneOffset()*60000;return new Date(d-o).toISOString().slice(0,10);}
+  function addDays(iso,n){const d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return isoOf(d);}
+  function jourNom(iso){return JOURS[new Date(iso+"T12:00:00").getDay()];}
+  function jourFrLong(iso){return new Date(iso+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
+  /* Heures dues sur une journee : 8 h du lundi au jeudi, 7 h le vendredi.
+     Le rythme est porte par la fiche du salarie. */
+  function heuresAttJour(iso){const j=jourNom(iso);
+    const h=employe&&employe.heuresSemaine;
+    if(h&&h[j]!=null)return +h[j];
+    return (CFG.heuresAttendues&&CFG.heuresAttendues[j]!=null)?CFG.heuresAttendues[j]:8;}
+  function dureeH(a,b){if(!a||!b)return 0;const[ha,ma]=a.split(":").map(Number),[hb,mb]=b.split(":").map(Number);const d=((hb*60+mb)-(ha*60+ma))/60;return d>0?d:0;}
+  function fmtH(h){const s=Math.round(h*100)/100;return Number.isInteger(s)?String(s):s.toFixed(2).replace(/0$/,"");}
+  function fmtHU(h){return fmtH(h)+" h";}
+  /* Affichage des totaux au format XXhXX (9.15 -> "9h09"). */
+  function fmtHM(h){const n=h<0,t=Math.round(Math.abs(h)*60),H=Math.floor(t/60),M=t%60;return (n?"-":"")+H+"h"+String(M).padStart(2,"0");}
+  function cap(s){return (s||"").charAt(0).toUpperCase()+(s||"").slice(1);}
+  function slug(s){return s.toString().toLowerCase().trim().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+  function sentKey(iso){return "am_sent_"+employe.id+"_"+iso;}
+  function paques(y){var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da);}
+  function joursFeries(y){var s=new Set();function add(mo,da){s.add(y+"-"+String(mo).padStart(2,"0")+"-"+String(da).padStart(2,"0"));}
+    add(1,1);add(5,1);add(5,8);add(7,14);add(8,15);add(11,1);add(11,11);add(12,25);add(12,26); // + 26/12 (Alsace-Moselle)
+    var p=paques(y);function off(n){var d=new Date(p);d.setDate(d.getDate()+n);return isoOf(d);}
+    s.add(off(-2)); // Vendredi Saint (Alsace-Moselle)
+    s.add(off(1));  // Lundi de Pâques
+    s.add(off(39)); // Ascension
+    s.add(off(50)); // Lundi de Pentecôte
+    return s;}
+
+  /* Icônes */
+  const IC={
+    jour:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>',
+    abs:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/></svg>',
+    hist:'<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>',
+    check:'<svg viewBox="0 0 24 24"><path d="M20 6.5 9.5 17 4.5 12"/></svg>',
+    conge:'<svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.5"/></svg>',
+    absence:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>',
+    maladie:'<svg viewBox="0 0 24 24"><path d="M9 3h6v3h3v6h-3v3H9v-3H6V6h3z" transform="translate(0 1) scale(0.9)"/></svg>',
+    repos:'<svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>',
+    compte:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>',
+    prev:'<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',
+    next:'<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>'
+  };
+
+  /* ---------------- Authentification ---------------- */
+  function sessionSauvee(){try{return JSON.parse(localStorage.getItem(CLE));}catch(e){return null;}}
+  function sauverSession(s){localStorage.setItem(CLE,JSON.stringify(s));}
+  function effacerSession(){localStorage.removeItem(CLE);}
+  let employe=null, horsLigne=false, sessionExpiree=false;
+  /* Compteur d'heures supplementaires, une ligne par mois, renvoye par la base. */
+  let BILANS=null;
+
+  /* ---- Accès Supabase (API REST directe, aucune librairie externe) ---- */
+  const SB={
+    base(){ return String(CFG.supabaseUrl||"").replace(/\/+$/,""); },
+    // Connexion par identifiant + mot de passe
+    async login(identifiant,motDePasse){
+      const r=await fetch(SB.base()+"/auth/v1/token?grant_type=password",{
+        method:"POST",headers:{"apikey":CFG.supabaseKey,"Content-Type":"application/json"},
+        body:JSON.stringify({email:(identifiant||"").trim().toLowerCase()+CFG.domaine,password:motDePasse})});
+      if(!r.ok) return null;
+      return await r.json();
+    },
+    // Reconnexion silencieuse (case « Rester connecté »)
+    async refresh(rt){
+      const r=await fetch(SB.base()+"/auth/v1/token?grant_type=refresh_token",{
+        method:"POST",headers:{"apikey":CFG.supabaseKey,"Content-Type":"application/json"},
+        body:JSON.stringify({refresh_token:rt})});
+      if(!r.ok) return null;
+      return await r.json();
+    },
+    // Requête sur les tables, avec renouvellement automatique du jeton
+    async q(chemin,opt,rejouer){
+      opt=opt||{};
+      const h={"apikey":CFG.supabaseKey,"Authorization":"Bearer "+(employe&&employe.accessToken),"Content-Type":"application/json"};
+      if(opt.prefer) h["Prefer"]=opt.prefer;
+      const r=await fetch(SB.base()+"/rest/v1/"+chemin,{method:opt.method||"GET",headers:h,
+        body:opt.body?JSON.stringify(opt.body):undefined});
+      if(r.status===401 && !rejouer && employe && employe.refreshToken){
+        const n=await SB.refresh(employe.refreshToken);
+        if(n&&n.access_token){
+          employe.accessToken=n.access_token; employe.refreshToken=n.refresh_token;
+          sauverSession(employe);
+          return SB.q(chemin,opt,true);
+        }
+      }
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      if(r.status===204) return null;
+      const t=await r.text();
+      return t?JSON.parse(t):null;
+    },
+    // Récupère la fiche du salarié connecté
+    async moi(){
+      let l=null;
+      try{ l=await SB.q("employes?select=id,nom,role,heures_semaine,heures_mois&limit=1"); }catch(e){}
+      if(!Array.isArray(l)) l=await SB.q("employes?select=id,nom,role&limit=1");  // avant le script 20
+      return (l&&l.length)?l[0]:null;
+    },
+    /* Compteur d'heures supplementaires (vue « bilans »). Les regles de
+       securite ne renvoient que les lignes du salarie connecte. */
+    async bilans(){
+      try{ const l=await SB.q("bilans?select=mois,effectives,payees,repos,credit,cumul&order=mois");
+           return Array.isArray(l)?l:[]; }catch(e){ return null; }
+    }
+  };
+
+  /* ---- Conversion entre le format de l'app et celui de la base ---- */
+  function versDB(p){
+    const h=v=>v?v:null;
+    return { employe_id:p.employeId, date:p.date, statut:p.statut, statut_label:p.statutLabel,
+      matinee_debut:h(p.matineeDebut), matinee_fin:h(p.matineeFin),
+      apres_midi_debut:h(p.apresMidiDebut), apres_midi_fin:h(p.apresMidiFin),
+      trajet_aller_depart:h(p.trajetAllerDepart), trajet_aller_arrivee:h(p.trajetAllerArrivee),
+      trajet_retour_depart:h(p.trajetRetourDepart), trajet_retour_arrivee:h(p.trajetRetourArrivee),
+      heures_journee:p.heuresJournee||0, heures_trajet:p.heuresTrajet||0, heures_total:p.heuresTotal||0,
+      heures_attendues:p.heuresAttendues||0, heures_supp:p.heuresSupp||0,
+      chantier:p.chantier||"", commentaire:p.commentaire||"", envoye_le:p.envoyeLe||new Date().toISOString() };
+  }
+  function hhmm(t){ return t?String(t).slice(0,5):""; }
+  function depuisDB(r){
+    return { employeId:r.employe_id, employeNom:employe?employe.nom:"", date:r.date,
+      statut:r.statut, statutLabel:r.statut_label,
+      matineeDebut:hhmm(r.matinee_debut), matineeFin:hhmm(r.matinee_fin),
+      apresMidiDebut:hhmm(r.apres_midi_debut), apresMidiFin:hhmm(r.apres_midi_fin),
+      trajetAllerDepart:hhmm(r.trajet_aller_depart), trajetAllerArrivee:hhmm(r.trajet_aller_arrivee),
+      trajetRetourDepart:hhmm(r.trajet_retour_depart), trajetRetourArrivee:hhmm(r.trajet_retour_arrivee),
+      heuresJournee:+r.heures_journee||0, heuresTrajet:+r.heures_trajet||0, heuresTotal:+r.heures_total||0,
+      heuresAttendues:+r.heures_attendues||0, heuresSupp:+r.heures_supp||0,
+      chantier:r.chantier||"", commentaire:r.commentaire||"", auto:!!r.auto,
+      envoyeLe:r.envoye_le, _envoyeHeure:r.envoye_le?new Date(r.envoye_le).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}):"" };
+  }
+  async function enregistrerFeuille(p){
+    await SB.q("feuilles?on_conflict=employe_id,date",
+      {method:"POST",prefer:"resolution=merge-duplicates,return=minimal",body:versDB(p)});
+  }
+
+  function renderLogin(prefill){
+    if(who)who.innerHTML="";
+    const nav=document.getElementById("tabbar"); if(nav)nav.innerHTML="";
+    app.innerHTML=`
+      <div class="hero"><div class="hi">Bienvenue</div><div class="name" style="text-transform:none">Ma feuille d'heures</div></div>
+      <div class="panel" style="margin-top:18px">
+        <div class="eyebrow">Connexion</div>
+        <div class="field"><span class="lab">Identifiant</span>
+          <input type="text" class="in" id="lg-id" placeholder="Ex : jcmuller" autocomplete="username"
+                 autocapitalize="none" autocorrect="off" spellcheck="false" value="${prefill||""}"></div>
+        <div class="field mt"><span class="lab">Mot de passe</span>
+          <input type="password" class="in" id="lg-mdp" placeholder="Mot de passe" autocomplete="current-password"></div>
+        <label class="remember" for="lg-mem">
+          <input type="checkbox" id="lg-mem" checked>
+          <span class="box"></span>
+          <span>Rester connecté sur ce téléphone</span>
+        </label>
+        <button class="cta" id="lg-ok" style="margin-top:18px">Se connecter</button>
+        <div class="hint" id="lg-msg" style="text-align:center"></div>
+      </div>`;
+    const btn=document.getElementById("lg-ok");
+    const go=async()=>{
+      const id=(document.getElementById("lg-id").value||"").trim();
+      const mdp=document.getElementById("lg-mdp").value||"";
+      const mem=document.getElementById("lg-mem").checked;
+      if(id.length<2||mdp.length<1)return toast("Identifiant et mot de passe obligatoires.",true);
+      btn.disabled=true;btn.textContent="Connexion…";
+      try{
+        const a=await SB.login(id,mdp);
+        if(!a||!a.access_token){btn.disabled=false;btn.textContent="Se connecter";return toast("Identifiant ou mot de passe incorrect.",true);}
+        employe={id:id.toLowerCase(),nom:id,role:"salarie",accessToken:a.access_token,refreshToken:a.refresh_token};
+        const m=await SB.moi();
+        if(m){employe.id=m.id;employe.nom=m.nom;employe.role=m.role||"salarie";employe.heuresSemaine=m.heures_semaine||null;employe.heuresMois=m.heures_mois!=null?+m.heures_mois:null;}
+        if(mem)sauverSession(employe); else effacerSession();
+        horsLigne=false;demarrer();
+      }catch(e){
+        btn.disabled=false;btn.textContent="Se connecter";
+        toast("Pas de connexion internet. Réessayez.",true);
+      }
+    };
+    btn.addEventListener("click",go);
+    document.getElementById("lg-mdp").addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+  }
+
+
+  /* Auto-connexion au démarrage (case « Rester connecté ») */
+  async function autoConnexion(){
+    const s=sessionSauvee();
+    if(!s||!s.id||!s.refreshToken){renderLogin(s?s.id:"");return;}
+    try{
+      const a=await SB.refresh(s.refreshToken);
+      if(a&&a.access_token){
+        employe=Object.assign({},s,{accessToken:a.access_token,refreshToken:a.refresh_token});
+        const m=await SB.moi(); if(m){employe.id=m.id;employe.nom=m.nom;employe.role=m.role||"salarie";employe.heuresSemaine=m.heures_semaine||null;employe.heuresMois=m.heures_mois!=null?+m.heures_mois:null;}
+        sauverSession(employe);horsLigne=false;demarrer();
+      } else {
+        // Jeton expire : on ouvre quand meme, en hors ligne, SANS rien effacer.
+        employe=s;horsLigne=true;sessionExpiree=true;demarrer();
+        toast("Session expiree — reconnectez-vous depuis l'onglet Historique.",true);
+      }
+    }catch(e){
+      // Pas de réseau (chantier) : on ouvre quand même avec la session mémorisée
+      employe=s;horsLigne=true;demarrer();
+      toast("Mode hors ligne — les feuilles partiront au retour du réseau.");
+    }
+  }
+
+  /* État */
+  let vue="jour", state, calYear, calMonth, calSel, calType="conge", histYear;
+  /* ---------- Brouillon : la saisie en cours survit à la fermeture de l'app ---------- */
+  let brouillonRepris=false;
+  function cleBrouillon(){ return "am_draft_"+employe.id; }
+  function sauverBrouillon(){ try{ localStorage.setItem(cleBrouillon(), JSON.stringify({state:state, maj:Date.now()})); }catch(e){} }
+  function effacerBrouillon(){ try{ localStorage.removeItem(cleBrouillon()); }catch(e){} }
+  function restaurerBrouillon(){
+    try{
+      const b=JSON.parse(localStorage.getItem(cleBrouillon()));
+      if(!b||!b.state||!b.state.date) return false;
+      if(Date.now()-(b.maj||0) > 7*86400000){ effacerBrouillon(); return false; }   // brouillon trop vieux
+      if(localStorage.getItem(sentKey(b.state.date))){ effacerBrouillon(); return false; } // déjà envoyée
+      state=b.state; brouillonRepris=true; return true;
+    }catch(e){ return false; }
+  }
+  function initState(){ state={date:todayISO()}; resetJour(); restaurerBrouillon(); }
+  function resetJour(){ const std=CFG.journeeStandard;
+    state.matineeDebut=std.matineeDebut;state.matineeFin=std.matineeFin;state.apremDebut=std.apremDebut;state.apremFin=std.apremFin;
+    state.trajetAllerDep="";state.trajetAllerArr="";state.trajetRetourDep="";state.trajetRetourArr="";state.chantier="";state.commentaire=""; }
+  function heuresTravail(){ return dureeH(state.matineeDebut,state.matineeFin)+dureeH(state.apremDebut,state.apremFin); }
+  function heuresTrajet(){ return dureeH(state.trajetAllerDep,state.trajetAllerArr)+dureeH(state.trajetRetourDep,state.trajetRetourArr); }
+  function heuresTotal(){ return heuresTravail()+heuresTrajet(); }
+
+  /* Navigation */
+  function renderTabbar(){
+    const nav=document.getElementById("tabbar");if(!nav)return;
+    const items=[["jour","Ma journée",IC.jour],["absences","Absences",IC.abs],
+      CFG.historiqueSalarie?["historique","Historique",IC.hist]:["historique","Mon compte",IC.compte]];
+    nav.innerHTML=items.map(it=>'<button class="nav-item" data-nav="'+it[0]+'" aria-current="'+(vue===it[0])+'">'+it[2]+'<span>'+it[1]+'</span><span class="nav-dot"></span></button>').join("");
+    nav.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>go(b.dataset.nav)));
+  }
+  function go(v){vue=v;render();try{window.scrollTo({top:0,behavior:"smooth"});}catch(e){window.scrollTo(0,0);}}
+  function render(){
+    if(vue==="absences")renderAbsences();
+    else if(vue==="historique")renderHistorique();
+    else renderJour();
+    renderTabbar();
+  }
+
+  /* ---------------- MA JOURNÉE ---------------- */
+  function renderJour(){
+    const deja=localStorage.getItem(sentKey(state.date));
+    if(deja){ app.innerHTML=doneView(JSON.parse(deja)); bindDone(); return; }
+    CHAMPS_HEURE.forEach(k=>{ state[k]=auQuart(state[k]); });
+    const tot=heuresTotal();
+    app.innerHTML=`
+      <div class="daybar">
+        <div><div class="eyebrow" style="margin-bottom:6px">Ma journée</div>
+          <div class="day">${jourNom(state.date)}</div>
+          <div class="day-sub">${jourFrLong(state.date)}</div></div>
+        <input type="date" class="date-input" id="f-date" value="${state.date}" max="${todayISO()}">
+      </div>
+      ${brouillonRepris?`<div class="offline" style="background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)"><span class="d" style="background:var(--accent)"></span>Saisie reprise là où vous l'aviez laissée</div>`:""}
+      <div class="panel">
+        <div class="eyebrow">Horaires</div>
+        ${paire("Matin — début","f-md",state.matineeDebut,"Matin — fin","f-mf",state.matineeFin)}
+        <div class="mt">${paire("Après-midi — début","f-ad",state.apremDebut,"Après-midi — fin","f-af",state.apremFin)}</div>
+        <div class="quick"><button class="primary" id="q-std">Journée standard · 8 h</button><button id="q-clr">Vider</button></div>
+      </div>
+      <div class="panel">
+        <div class="eyebrow">Trajet</div>
+        ${paire("Aller — départ","f-tad",state.trajetAllerDep,"Aller — arrivée","f-taa",state.trajetAllerArr)}
+        <div class="mt">${paire("Retour — départ","f-trd",state.trajetRetourDep,"Retour — arrivée","f-tra",state.trajetRetourArr)}</div>
+      </div>
+      <div class="panel">
+        <div class="field"><span class="lab">Chantier</span>
+          <input type="text" class="in" id="f-cha" placeholder="Nom du chantier" autocomplete="off" maxlength="60" value="${state.chantier||""}"></div>
+        <div class="mt"><div class="field"><span class="lab">Commentaire (facultatif)</span>
+          <input type="text" class="in" id="f-com" placeholder="Remarque" value="${state.commentaire||""}"></div></div>
+      </div>
+      <div class="ledger">
+        <div class="k">Total de la journée</div>
+        <div class="big num" id="r-tot">${fmtHM(tot)}</div>
+        <div class="note">trajet inclus</div>
+      </div>
+      <button class="btn-send" id="f-send">${IC.check}Envoyer</button>`;
+    bindJour();
+  }
+  function champHeure(lab,id,val){
+    const v=(val&&/^\d{1,2}:\d{2}/.test(val))?val.slice(0,5):"";
+    return `<div class="field"><span class="lab">${lab}</span>
+      <div class="tp-field${v?"":" vide"}" id="${id}" role="button" tabindex="0"
+           data-tp="${id}" data-lab="${lab.replace(/"/g,'&quot;')}">${v||"--:--"}</div></div>`;
+  }
+  function paire(lD,iD,vD,lF,iF,vF){
+    return `<div class="two">${champHeure(lD,iD,vD)}${champHeure(lF,iF,vF)}</div>`;
+  }
+  function bindJour(){
+    document.getElementById("f-date").addEventListener("change",e=>{state.date=e.target.value||todayISO();sauverBrouillon();render();});
+    // Champs texte (chantier, commentaire)
+    [["f-cha","chantier"],["f-com","commentaire"]]
+      .forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.addEventListener("input",e=>{state[k]=e.target.value;majTot();});});
+    // Champs heure : molette tactile au tap
+    const HEURES={"f-md":"matineeDebut","f-mf":"matineeFin","f-ad":"apremDebut","f-af":"apremFin",
+                  "f-tad":"trajetAllerDep","f-taa":"trajetAllerArr","f-trd":"trajetRetourDep","f-tra":"trajetRetourArr"};
+    Object.keys(HEURES).forEach(id=>{const el=document.getElementById(id);if(!el)return;
+      const ouvre=()=>ouvrirHeure(id,HEURES[id],el.dataset.lab||"");
+      el.addEventListener("click",ouvre);
+      el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();ouvre();}});});
+    document.getElementById("q-std").addEventListener("click",()=>{const s=CFG.journeeStandard;Object.assign(state,{matineeDebut:s.matineeDebut,matineeFin:s.matineeFin,apremDebut:s.apremDebut,apremFin:s.apremFin});sauverBrouillon();render();});
+    document.getElementById("q-clr").addEventListener("click",()=>{Object.assign(state,{matineeDebut:"",matineeFin:"",apremDebut:"",apremFin:"",trajetAllerDep:"",trajetAllerArr:"",trajetRetourDep:"",trajetRetourArr:""});sauverBrouillon();render();});
+    document.getElementById("f-send").addEventListener("click",envoyerJour);
+  }
+  /* ---------- Selecteur d'heure a molettes ----------
+     Remplace l'horloge native d'Android, penible a faire tourner. Deux
+     colonnes qui defilent (heures / minutes), un bandeau central = la valeur.
+     Minutes au quart d'heure : 00, 15, 30, 45. */
+  let tpCible=null, tpChamp=null;
+  function tpPasMin(){ return Math.max(1, Math.round((CFG.stepMinutes||15))); }
+  /* Toute heure est ramenee au quart d'heure le plus proche : un brouillon ou
+     une saisie d'avant (07:10) ne peut plus partir avec des minutes libres. */
+  const CHAMPS_HEURE=["matineeDebut","matineeFin","apremDebut","apremFin","trajetAllerDep","trajetAllerArr","trajetRetourDep","trajetRetourArr"];
+  function auQuart(v){ if(!v||!/^\d{1,2}:\d{2}/.test(v))return v; const pas=tpPasMin();
+    let [h,m]=v.slice(0,5).split(":").map(Number); m=Math.round(m/pas)*pas; if(m>=60){m=0;h=(h+1)%24;}
+    return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"); }
+  function ouvrirHeure(id,cle,lab){
+    tpCible=cle; tpChamp=id;
+    const pas=tpPasMin();
+    const cur=(state[cle]&&/^\d{1,2}:\d{2}/.test(state[cle]))?state[cle]:"07:00";
+    let [ch,cm]=cur.split(":").map(Number);
+    cm=Math.round(cm/pas)*pas; if(cm>=60){cm=0;ch=(ch+1)%24;}
+    let ov=document.getElementById("tp-ov");
+    if(!ov){
+      ov=document.createElement("div"); ov.id="tp-ov"; ov.className="tp-overlay";
+      const heures=[...Array(24).keys()].map(h=>`<div class="it" data-v="${h}">${String(h).padStart(2,"0")}</div>`).join("");
+      const mins=[]; for(let m=0;m<60;m+=pas) mins.push(`<div class="it" data-v="${m}">${String(m).padStart(2,"0")}</div>`);
+      ov.innerHTML=`<div class="tp-sheet" id="tp-sheet" role="dialog" aria-modal="true">
+        <div class="tp-head"><button class="tp-cancel" id="tp-x">Annuler</button>
+          <span class="tp-title" id="tp-title">Heure</span>
+          <button class="tp-ok" id="tp-ok">Valider</button></div>
+        <div class="tp-wheels"><div class="tp-band"></div>
+          <div class="tp-col" id="tp-h"><div class="pad"></div>${heures}<div class="pad"></div></div>
+          <span class="tp-sep">:</span>
+          <div class="tp-col" id="tp-m"><div class="pad"></div>${mins.join("")}<div class="pad"></div></div>
+        </div></div>`;
+      document.body.appendChild(ov);
+      ov.addEventListener("click",e=>{ if(e.target===ov) fermerHeure(); });
+      document.getElementById("tp-x").addEventListener("click",fermerHeure);
+      document.getElementById("tp-ok").addEventListener("click",validerHeure);
+      ["tp-h","tp-m"].forEach(c=>{const col=document.getElementById(c);
+        let t; col.addEventListener("scroll",()=>{clearTimeout(t);t=setTimeout(()=>tpMarque(col),60);});});
+    }
+    document.getElementById("tp-title").textContent=lab||"Heure";
+    tpAligne("tp-h", ch);
+    tpAligne("tp-m", Math.round(cm/pas));
+    ov.classList.add("on");
+    requestAnimationFrame(()=>{document.getElementById("tp-sheet").classList.add("on");});
+  }
+  function tpAligne(colId, index){
+    const col=document.getElementById(colId);
+    // deux frames : le sheet doit etre mesurable avant de calculer le scroll
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ col.scrollTop=index*48; tpMarque(col); }));
+  }
+  function tpMarque(col){
+    const idx=Math.round(col.scrollTop/48);
+    col.querySelectorAll(".it").forEach((el,i)=>el.classList.toggle("sel", i===idx));
+  }
+  function tpValeur(colId){
+    const col=document.getElementById(colId);
+    const idx=Math.max(0,Math.round(col.scrollTop/48));
+    const it=col.querySelectorAll(".it")[idx];
+    return it?+it.dataset.v:0;
+  }
+  function validerHeure(){
+    const h=tpValeur("tp-h"), m=tpValeur("tp-m");
+    const val=String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
+    state[tpCible]=val;
+    const el=document.getElementById(tpChamp);
+    if(el){ el.textContent=val; el.classList.remove("vide"); }
+    majTot(); fermerHeure();
+  }
+  function fermerHeure(){
+    const ov=document.getElementById("tp-ov"); if(!ov)return;
+    const sh=document.getElementById("tp-sheet"); if(sh)sh.classList.remove("on");
+    ov.classList.remove("on");
+  }
+
+  function majTot(){const el=document.getElementById("r-tot");if(el)el.innerHTML=fmtHM(heuresTotal());sauverBrouillon();}
+
+  function doneView(p){
+    const tot=(p.heuresJournee||0)+(p.heuresTrajet||0);
+    const corps = p.statut==="travail"
+      ? `<p><span class="strong">${fmtHU(tot)}</span> au total</p><p style="font-size:12.5px">${p._pending?"Enregistrée":"Envoyée"} à ${p._envoyeHeure||"—"}</p>`
+      : `<p><span class="strong">${p.statutLabel}</span></p>`;
+    return `
+      <div class="daybar">
+        <div><div class="eyebrow" style="margin-bottom:6px">Feuille du jour</div>
+          <div class="day">${jourNom(state.date)}</div>
+          <div class="day-sub">${jourFrLong(state.date)}</div></div>
+        <input type="date" class="date-input" id="f-date" value="${state.date}" max="${todayISO()}">
+      </div>
+      ${p._pending?`<div class="offline"><span class="d"></span>En attente d'envoi — partira au retour du réseau</div>`:""}
+      <div class="panel"><div class="done">
+        <div class="tick">${IC.check}</div>
+        <h3>${p._pending?"Feuille enregistrée":"Feuille envoyée"}</h3>${corps}
+      </div></div>
+      <div class="hint" style="text-align:center">Changez la date ci-dessus pour remplir un autre jour.</div>`;
+  }
+  function bindDone(){
+    const d=document.getElementById("f-date");
+    if(d)d.addEventListener("change",e=>{state.date=e.target.value||todayISO();resetJour();render();});
+  }
+
+  async function envoyerJour(){
+    if(heuresTravail()<=0)return toast("Renseignez au moins la matinée ou l'après-midi.",true);
+    if((state.matineeDebut&&state.matineeFin&&dureeH(state.matineeDebut,state.matineeFin)<=0)||(state.apremDebut&&state.apremFin&&dureeH(state.apremDebut,state.apremFin)<=0))return toast("Une heure de fin est avant le début.",true);
+    const btn=document.getElementById("f-send");btn.disabled=true;btn.textContent="Envoi…";
+    const p=buildPayload(state.date,"travail");
+    await envoyer(p, ()=>{btn.disabled=false;btn.innerHTML=IC.check+"Envoyer";});
+  }
+
+  function buildPayload(iso,statut,extra){
+    const now=new Date();
+    const envoyeHeure=now.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",timeZone:CFG.timezone||"Europe/Paris"});
+    const trav=statut==="travail", att=heuresAttJour(iso);
+    /* Un conge, un repos ou un arret maladie est paye : la journee porte les
+       heures dues (7 h un vendredi, 8 h sinon). Jamais d'heures supp. */
+    const hj=trav?heuresTravail():(CREDITE[statut]?att:0), ht=trav?heuresTrajet():0;
+    return Object.assign({
+      source:"app-am", employeId:employe.id, employeNom:employe.nom, date:iso, jourSemaine:jourNom(iso),
+      statut:statut, statutLabel:ABS[statut]||"Travaillé",
+      chantier:trav?String(state.chantier||"").replace(/["\\\r\n]/g," ").slice(0,60):"", trajetAllerDepart:trav?state.trajetAllerDep:"", trajetAllerArrivee:trav?state.trajetAllerArr:"",
+      matineeDebut:trav?state.matineeDebut:"", matineeFin:trav?state.matineeFin:"", apresMidiDebut:trav?state.apremDebut:"", apresMidiFin:trav?state.apremFin:"",
+      trajetRetourDepart:trav?state.trajetRetourDep:"", trajetRetourArrivee:trav?state.trajetRetourArr:"",
+      heuresJournee:Math.round(hj*100)/100, heuresTrajet:Math.round(ht*100)/100, heuresTotal:Math.round((hj+ht)*100)/100,
+      heuresAttendues:att, heuresSupp:trav?Math.round((hj+ht-att)*100)/100:0,
+      commentaire:trav?String(state.commentaire||"").replace(/["\\\r\n]/g," ").slice(0,200):"", envoyeLe:now.toISOString(), _envoyeHeure:envoyeHeure
+    }, extra||{});
+  }
+  async function envoyer(p, onErr){
+    const cle="am_sent_"+employe.id+"_"+p.date;
+    try{
+      await enregistrerFeuille(p);
+      localStorage.setItem(cle,JSON.stringify(p));
+      if(window.AM_NOTIF)AM_NOTIF.markDone(p.date);
+      effacerBrouillon();brouillonRepris=false;
+      horsLigne=false;toast("Feuille envoyée");render();return true;
+    }catch(e){
+      // Pas de réseau : on garde la feuille et on la renverra automatiquement
+      const q=Object.assign({},p,{_pending:true});
+      localStorage.setItem(cle,JSON.stringify(q));
+      effacerBrouillon();brouillonRepris=false;
+      horsLigne=true;
+      if(onErr)onErr();
+      const refus=/40[13]/.test(String(e&&e.message));
+      toast(refus ? "Refusé par le serveur — reconnectez-vous (onglet Historique)."
+                  : "Hors ligne — enregistrée, envoi dès le retour du réseau.", refus);
+      if(refus) sessionExpiree=true;
+      render();return true;
+    }
+  }
+
+  /* ---------------- Synchronisation serveur ---------------- */
+  function feuillesEnAttente(){
+    const pre="am_sent_"+employe.id+"_",out=[];
+    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
+      if(k&&k.indexOf(pre)===0){try{const p=JSON.parse(localStorage.getItem(k));if(p&&p._pending)out.push(p);}catch(e){}}}
+    return out;
+  }
+  async function renvoyerEnAttente(){
+    if(!employe)return;
+    const list=feuillesEnAttente();if(!list.length)return;
+    const pre="am_sent_"+employe.id+"_";let n=0;
+    for(const p of list){
+      const q=Object.assign({},p);delete q._pending;
+      try{ await enregistrerFeuille(q); localStorage.setItem(pre+q.date,JSON.stringify(q)); n++; }
+      catch(e){ horsLigne=true; break; }
+    }
+    if(n){horsLigne=false;toast(n+" feuille"+(n>1?"s":"")+" synchronisée"+(n>1?"s":""));render();}
+  }
+  async function chargerServeur(){
+    if(!employe||!employe.accessToken)return;
+    /* Compteur : independant des feuilles, il ne doit pas bloquer la synchro. */
+    SB.bilans().then(b=>{ if(b){BILANS=b; if(vue==="historique")render();} });
+    const LIMITE=1500;
+    try{
+      const lignes=await SB.q("feuilles?select=*&order=date.desc&limit="+LIMITE);
+      if(!Array.isArray(lignes))return;                 // reponse illisible : on ne touche a rien
+      const pre="am_sent_"+employe.id+"_";
+
+      // 1) On pose ce que le serveur renvoie, sans ecraser une saisie en attente.
+      const surServeur=new Set();
+      lignes.forEach(ligne=>{
+        const f=depuisDB(ligne), cle=pre+f.date;
+        surServeur.add(f.date);
+        let local=null; try{ local=JSON.parse(localStorage.getItem(cle)); }catch(e){}
+        if(local&&local._pending) return;
+        localStorage.setItem(cle,JSON.stringify(f));
+      });
+
+      // 2) Le serveur fait foi pour les journees deja transmises : celles qui
+      //    ont disparu la-bas doivent disparaitre ici. On ne purge JAMAIS une
+      //    saisie en attente d'envoi, et jamais au-dela de ce que la requete
+      //    a pu voir (si elle a bute sur la limite, on s'arrete a la plus
+      //    ancienne date connue). Une reponse vide alors qu'on avait des
+      //    lignes locales purge donc bien tout : c'est voulu.
+      let borne=null;
+      if(lignes.length>=LIMITE){
+        borne=lignes.reduce((m,l)=>{const d=String(l.date); return (m===null||d<m)?d:m;},null);
+      }
+      const aSupprimer=[];
+      for(let i=0;i<localStorage.length;i++){
+        const k=localStorage.key(i);
+        if(!k||k.indexOf(pre)!==0)continue;
+        const iso=k.slice(pre.length);
+        if(surServeur.has(iso))continue;
+        if(borne!==null&&iso<borne)continue;             // hors de portee de la requete
+        let local=null; try{ local=JSON.parse(localStorage.getItem(k)); }catch(e){}
+        if(local&&local._pending)continue;               // pas encore transmise : on garde
+        aSupprimer.push(k);
+      }
+      aSupprimer.forEach(k=>localStorage.removeItem(k));
+
+      horsLigne=false;render();
+    }catch(e){ horsLigne=true;render(); }               // reseau coupe : on garde tout
+  }
+  async function synchroniser(){ await renvoyerEnAttente(); await chargerServeur(); }
+
+  /* ---------------- ABSENCES (calendrier) ---------------- */
+  function renderAbsences(){
+    const t=todayISO();
+    if(calYear==null){calYear=+t.slice(0,4);calMonth=+t.slice(5,7)-1;}
+    if(!calSel)calSel=new Set();
+    const feries=joursFeries(calYear);
+    const first=new Date(calYear,calMonth,1);
+    const lead=(first.getDay()+6)%7;               // Lun=0
+    const nb=new Date(calYear,calMonth+1,0).getDate();
+    let cells="";
+    for(let i=0;i<lead;i++)cells+='<div class="cal-day blank"></div>';
+    for(let d=1;d<=nb;d++){
+      const iso=calYear+"-"+String(calMonth+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+      const wd=new Date(iso+"T12:00:00").getDay();   // 0=dimanche … 6=samedi
+      const isToday=iso===t?" today":"";
+      const dim=(wd===0||wd===6), ferie=feries.has(iso);
+      if(dim||ferie){                                 // dimanches & fériés non sélectionnables (congé = 6 j ouvrables)
+        cells+=`<div class="cal-day ${ferie?"ferie":"dim"}${isToday}"${ferie?' title="Jour férié"':""}>${d}${ferie?'<span class="mk fer"></span>':""}</div>`;
+        continue;
+      }
+      const raw=localStorage.getItem("am_sent_"+employe.id+"_"+iso);
+      let declare="";
+      if(raw){try{const p=JSON.parse(raw);declare=p.statut;}catch(e){}}
+      const isSel=calSel.has(iso);
+      const cls=isSel?(" sel "+calType):"";
+      const mk=(!isSel&&declare)?`<span class="mk ${declare}"></span>`:"";
+      cells+=`<div class="cal-day${isToday}${cls}" data-iso="${iso}">${d}${mk}</div>`;
+    }
+    const jours=["L","M","M","J","V","S","D"].map(j=>`<div class="cal-hd">${j}</div>`).join("");
+    const n=calSel.size;
+    app.innerHTML=`
+      <div class="hero"><div class="hi">Déclarer une absence</div><div class="name" style="text-transform:none">Congés & absences</div></div>
+      <div class="panel">
+        <div class="eyebrow">Type</div>
+        <div class="seg">
+          <button class="pill conge" data-type="conge" aria-pressed="${calType==='conge'}">${IC.conge}Congé</button>
+          <button class="pill repos" data-type="repos" aria-pressed="${calType==='repos'}">${IC.repos}Repos</button>
+          <button class="pill absence" data-type="absence" aria-pressed="${calType==='absence'}">${IC.absence}Absence</button>
+          <button class="pill maladie" data-type="maladie" aria-pressed="${calType==='maladie'}">${IC.maladie}Maladie</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="cal-nav">
+          <button id="cal-prev" aria-label="Mois précédent">${IC.prev}</button>
+          <div class="m">${MOIS[calMonth]} ${calYear}</div>
+          <button id="cal-next" aria-label="Mois suivant">${IC.next}</button>
+        </div>
+        <div class="cal-grid">${jours}${cells}</div>
+        <div class="cal-legend">
+          <span><i style="background:var(--accent)"></i>Congé</span>
+          <span><i style="background:var(--blue)"></i>Repos</span>
+          <span><i style="background:var(--amber)"></i>Absence</span>
+          <span><i style="background:var(--danger)"></i>Maladie</span>
+          <span><i style="background:var(--good)"></i>Travaillé</span>
+          <span><i style="background:#c9c2b6"></i>Férié</span>
+        </div>
+        <div class="hint">Samedis, dimanches et jours fériés non sélectionnables. La semaine va du lundi au vendredi.</div>
+      </div>
+      <button class="btn-send" id="abs-ok" ${n?"":"disabled"}>Déclarer ${n?(n+" jour"+(n>1?"s":"")+" en "+ABS[calType].toLowerCase()):"— sélectionnez des jours"}</button>`;
+    bindAbsences();
+  }
+  function bindAbsences(){
+    document.querySelectorAll(".seg .pill[data-type]").forEach(b=>b.addEventListener("click",()=>{calType=b.dataset.type;renderAbsences();renderTabbar();}));
+    document.getElementById("cal-prev").addEventListener("click",()=>{calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderAbsences();renderTabbar();});
+    document.getElementById("cal-next").addEventListener("click",()=>{calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderAbsences();renderTabbar();});
+    document.querySelectorAll(".cal-day[data-iso]").forEach(c=>c.addEventListener("click",()=>{const iso=c.dataset.iso;if(calSel.has(iso))calSel.delete(iso);else calSel.add(iso);renderAbsences();renderTabbar();}));
+    const ok=document.getElementById("abs-ok");
+    if(ok&&calSel.size)ok.addEventListener("click",declarerAbsences);
+  }
+  async function declarerAbsences(){
+    const jours=Array.from(calSel).sort();const type=calType;
+    const btn=document.getElementById("abs-ok");btn.disabled=true;btn.textContent="Envoi…";
+    let ok=0;
+    for(const iso of jours){ const p=buildPayload(iso,type); const r=await envoyerSilencieux(p); if(r)ok++; }
+    calSel.clear();
+    toast(ok+" jour"+(ok>1?"s":"")+" déclaré"+(ok>1?"s":"")+" en "+ABS[type].toLowerCase());
+    renderAbsences();renderTabbar();
+  }
+  async function envoyerSilencieux(p){
+    const cle="am_sent_"+employe.id+"_"+p.date;
+    try{ await enregistrerFeuille(p); localStorage.setItem(cle,JSON.stringify(p)); return true; }
+    catch(e){ localStorage.setItem(cle,JSON.stringify(Object.assign({},p,{_pending:true}))); horsLigne=true; return false; }
+  }
+
+  /* ---------------- HISTORIQUE ---------------- */
+  function getEntries(){const pre="am_sent_"+employe.id+"_",out=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(pre)===0){try{const p=JSON.parse(localStorage.getItem(k));p.iso=k.slice(pre.length);out.push(p);}catch(e){}}}return out;}
+  function moisPrec(ym){const y=+ym.slice(0,4),m=+ym.slice(5,7),d=new Date(y,m-2,1);
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");}
+  function nomMois(ym){const d=new Date(ym+"-01T12:00:00");
+    return MOIS[d.getMonth()].toLowerCase()+" "+d.getFullYear();}
+
+  /* Les cinq lignes du bas du classeur, telles quelles, sur le mois en cours.
+     « Heures effectives » n'y figure pas : le salarie a deja le total du mois
+     juste en dessous, mois par mois. */
+  function compteurSupp(){
+    if(!BILANS||!BILANS.length)return "";
+    const ym=todayISO().slice(0,7);
+    const avec=BILANS.filter(b=>b.mois<=ym && b.credit!=null);
+    const b=avec.length?avec[avec.length-1]:null;
+    if(!b)return "";
+    const k=BILANS.findIndex(x=>x.mois===b.mois);
+    const prec=k>0?+BILANS[k-1].cumul:0;
+    const enCours=b.mois===ym;
+    const sg=v=>(v>0?"+":"")+fmtHM(v);
+    const li=(t,v,o)=>{o=o||{};return `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0${o.trait?";border-top:1px solid var(--line)":""}">
+        <span style="font-size:13.5px;font-weight:${o.fort?800:600};color:${o.fort?"var(--ink)":"var(--muted)"}">${t}</span>
+        <span style="font-weight:800;font-size:${o.gros?"19px":"15px"}${o.couleur?";color:"+o.couleur:""};white-space:nowrap">${v}</span></div>`;};
+    return `
+      <div class="sec">Mes heures supplémentaires</div>
+      <div class="panel">
+        ${li("Repos à déduire", +b.repos>0?"-"+fmtHM(+b.repos):"—", {couleur:+b.repos>0?"var(--blue)":""})}
+        ${li("Heures payées + HS", fmtHM(+b.payees), {trait:true})}
+        ${li("TOTAL CRÉDIT D'HEURES SUR LE MOIS", sg(+b.credit), {trait:true,fort:true,couleur:+b.credit<0?"var(--danger)":"var(--accent)"})}
+        ${li("Reste du mois précédent", sg(prec), {trait:true})}
+        ${li("Cumul à créditer sur mois suivant", sg(+b.cumul), {trait:true,fort:true,gros:true,couleur:+b.cumul<0?"var(--danger)":"var(--accent)"})}
+        ${enCours?`<div style="color:var(--muted);font-size:12px;padding:2px 0 6px">${cap(MOIS[+b.mois.slice(5,7)-1].toLowerCase())} n'est pas fini : les deux derniers montants bougeront encore.</div>`:""}
+      </div>`;
+  }
+
+  function renderHistorique(){
+    const all=getEntries();
+    const annees=Array.from(new Set(all.map(e=>e.iso.slice(0,4)))).sort();
+    const curY=+todayISO().slice(0,4);
+    if(histYear==null)histYear=curY;
+    const minY=annees.length?+annees[0]:curY, maxY=Math.max(curY,annees.length?+annees[annees.length-1]:curY);
+    const ejahr=all.filter(e=>e.iso.slice(0,4)===String(histYear));
+
+    /* Comme au classeur : heures travaillees + journees payees sans
+       travailler. Le trajet compte a part. */
+    let totEff=0, totTrajet=0;
+    ejahr.forEach(e=>{ totEff+=e.heuresJournee||0;
+                       if(e.statut==="travail") totTrajet+=e.heuresTrajet||0; });
+
+    let body="";
+    for(let m=11;m>=0;m--){
+      const mm=String(m+1).padStart(2,"0");
+      const list=ejahr.filter(e=>e.iso.slice(5,7)===mm).sort((a,b)=>b.iso.localeCompare(a.iso));
+      if(!list.length)continue;
+      let mt=0; list.forEach(e=>{ mt+=e.heuresJournee||0; });
+      const rows=list.map(e=>{const d=new Date(e.iso+"T12:00:00");
+        const val=e.statut==="travail"
+          ? `<span class="dv">${fmtHM(e.heuresJournee||0)}</span>`
+          : `<span class="dv off ${e.statut}">${e.statutLabel}</span>`;
+        const bouts=[];
+        if(e.statut==="travail"){
+          if(e.chantier) bouts.push(e.chantier);
+          if(e.heuresTrajet>0) bouts.push("trajet "+fmtHM(e.heuresTrajet));
+        } else bouts.push("journée payée");
+        if(e._pending) bouts.push("en attente d'envoi");
+        return `<div class="day-row"><div class="dd"><div class="n">${d.getDate()}</div><div class="w">${JOURS[d.getDay()].slice(0,3)}</div></div>
+          <div class="di"><div class="dt">${jourNom(e.iso)}</div><div class="ds">${bouts.join(" · ")||"—"}</div></div>${val}</div>`;}).join("");
+      body+=`<div class="mois-h"><span class="mn">${MOIS[m]}</span><span class="mt">${fmtHM(mt)}</span></div><div class="panel" style="padding:6px 20px">${rows}</div>`;
+    }
+    if(!body)body=`<div class="empty"><div class="big">Aucune feuille en ${histYear}</div><div>L'historique s'affichera ici.</div></div>`;
+    const nAtt=feuillesEnAttente().length;
+
+    const chiffres = !CFG.historiqueSalarie ? "" : `
+      <div class="yr">
+        <button id="y-prev" ${histYear<=minY?"disabled":""}>${IC.prev}</button>
+        <div class="y">${histYear}</div>
+        <button id="y-next" ${histYear>=maxY?"disabled":""}>${IC.next}</button>
+      </div>
+      <div class="sec">Mes heures, mois par mois</div>
+      <div class="panel" style="display:flex;justify-content:space-around;text-align:center">
+        <div><div style="font-size:24px;font-weight:800" class="num">${fmtHM(totEff)}</div><div style="font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px">Heures ${histYear}</div></div>
+        <div><div style="font-size:24px;font-weight:800" class="num">${fmtHM(totTrajet)}</div><div style="font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px">Trajet ${histYear}</div></div>
+      </div>
+      ${compteurSupp()}
+      <div class="sec">Le détail de mes journées</div>
+      ${body}`;
+    app.innerHTML=`
+      <div class="hero"><div class="hi">${CFG.historiqueSalarie?"Mon historique":"Mon compte"}</div><div class="name" style="text-transform:none">${CFG.historiqueSalarie?"Toutes mes heures":employe.nom}</div></div>
+      ${horsLigne?`<div class="offline"><span class="d"></span>Hors ligne${nAtt?` — ${nAtt} feuille${nAtt>1?"s":""} en attente d'envoi`:""}</div>`:""}
+      ${chiffres}
+      <div class="sec">Mon compte</div>
+      <div class="panel">
+        <div class="prow" style="display:flex;align-items:center;gap:14px">
+          <div class="avatar2">${(employe.nom||"?").trim().charAt(0).toUpperCase()}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800;font-size:16px">${employe.nom}</div>
+            <div style="color:var(--muted);font-size:13px">Identifiant : ${employe.id}</div>
+          </div>
+        </div>
+        <button class="cta line" id="h-sync" style="margin-top:16px">Actualiser mes données</button>
+        ${sessionExpiree?`<button class="cta" id="h-relog" style="margin-top:10px">Se reconnecter</button>`:""}
+      </div>
+      ${CFG.historiqueSalarie?"":`<div class="hint" style="text-align:center;margin-top:16px">Le récapitulatif de vos heures sera bientôt disponible.</div>`}`;
+    const yp=document.getElementById("y-prev"),yn=document.getElementById("y-next");
+    if(yp&&histYear>minY)yp.addEventListener("click",()=>{histYear--;renderHistorique();});
+    if(yn&&histYear<maxY)yn.addEventListener("click",()=>{histYear++;renderHistorique();});
+    const hr=document.getElementById("h-relog");
+    if(hr)hr.addEventListener("click",()=>{ renderLogin(employe?employe.id:""); });
+    const hs=document.getElementById("h-sync");
+    if(hs)hs.addEventListener("click",async()=>{hs.disabled=true;hs.textContent="Actualisation…";await synchroniser();if(!horsLigne)toast("Données à jour");renderHistorique();});
+  }
+
+  /* Toast */
+  let tT;function toast(m,e){let t=document.querySelector(".toast");if(!t){t=document.createElement("div");document.body.appendChild(t);}t.className="toast"+(e?" err":"");t.textContent=m;clearTimeout(tT);t.style.animation="none";void t.offsetWidth;t.style.animation="";tT=setTimeout(()=>t.remove(),3000);}
+
+  /* Démarrage */
+  function demarrer(){
+    if(who)who.innerHTML=`<div class="nom">${employe.nom}</div><div class="role">${employe.id}</div>`;
+    initState();vue="jour";render();
+    if(window.AM_NOTIF)AM_NOTIF.login(employe);
+    synchroniser();
+  }
+  window.addEventListener("online",()=>{ if(employe)synchroniser(); });
+  autoConnexion();
+})();
+</script>
+</body>
+</html>
